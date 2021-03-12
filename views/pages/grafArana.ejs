@@ -42,11 +42,18 @@
                                         <br>
                                         <br>
                                     </div>    
-                                    <div class="col-12 col-md-1">
+                                    <div class="col-12 col-md-4">
                                         <img src="/images/logo-tec2.png" width="150" height="265" class="img-fluid" id="tec">
                                         <br>
                                         <br>
                                     </div>
+                                    <div class="col-12 col-md-6">
+                                            <h3 id="title_label"></h3>
+                                    </div>
+                                    <script>
+                                        var title = document.getElementById("asada").selectedOptions[0].innerHTML;
+                                        document.getElementById("title_label").innerText = title;
+                                    </script>
                                 </div>           
                                 <script>
                                     document.getElementById("divImg").style.visibility = "hidden";

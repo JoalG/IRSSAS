@@ -595,11 +595,11 @@ function getEstadisticas(){
 		  console.log("Promedio MB: ", (cantMB*100)/distritos.rows.length);
 		  */
 		  promedioIRSSAS.textContent = "Promedio del IRSSAS: " + (irssas/(distritos.rows.length)).toFixed(0);
-		  promedioMA.textContent = "Muy Alto: " + ((cantMA*100)/distritos.rows.length).toFixed(2) + "%";
-		  promedioA.textContent = "Alto: " + ((cantA*100)/distritos.rows.length).toFixed(2)+ "%";
-		  promedioM.textContent = "Medio: " + ((cantM*100)/distritos.rows.length).toFixed(2)+ "%";
-		  promedioB.textContent = "Bajo: " + ((cantB*100)/distritos.rows.length).toFixed(2)+ "%";
-		  promedioMB.textContent = "Muy Bajo: " + ((cantMB*100)/distritos.rows.length).toFixed(2)+ "%";
+		  promedioMA.textContent = "Muy Alto: " + ((cantMA*100)/distritos.rows.length).toFixed(0) + "%";
+		  promedioA.textContent = "Alto: " + ((cantA*100)/distritos.rows.length).toFixed(0)+ "%";
+		  promedioM.textContent = "Medio: " + ((cantM*100)/distritos.rows.length).toFixed(0)+ "%";
+		  promedioB.textContent = "Bajo: " + ((cantB*100)/distritos.rows.length).toFixed(0)+ "%";
+		  promedioMB.textContent = "Muy Bajo: " + ((cantMB*100)/distritos.rows.length).toFixed(0)+ "%";
 	  });
 }
 
