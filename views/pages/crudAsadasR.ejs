@@ -69,7 +69,7 @@
                                             </button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-icon">
+                                        <button class="btn btn-icon" onclick="borrarAsada(this,'<%=asada.ID%>')">
                                             <i class="fas fa-trash text-danger"></i>
                                         </button>
                                     </td>
@@ -106,6 +106,56 @@
         });
     </script>
     
+    <script type="text/javascript">
+            function borrarAsada(element,idAsada)
+            {
+                console.log("asada borrar: ",idAsada);
+                Swal.fire(
+                {
+                    title: 'Borrar ASADA',
+                    text: '¿Desea borrar esta ASADA?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1D2D51',
+                    cancelButtonColor: '#e13c26',
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: 'No'
+                }) //end sweetConfirmation
+                .then((result) =>
+                {
+                    if (result.value)
+                    {
+                        console.log("empieza el load")
+                        Swal.fire(
+                        {
+                            title: "Cargando...",
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            onBeforeOpen: ()=>
+                            {
+                                Swal.showLoading();
+                                $.post("/deleteasada", {"idAsada": idAsada}, function(data)
+                                {
+                                    Swal.fire(
+                                    {
+                                        title: data.error ? 'Error' : 'Éxito',
+                                        icon: data.error ? 'error' : 'success',
+                                        text: data.error ? 'Ocurrió un error al borrar la ASADA' : 'La ASADA se borró con éxito',
+                                        confirmButtonColor: '#1D2D51'
+                                    }) //end sweetResult
+                                    .then((result) =>
+                                    {
+                                        element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
+                                    })
+                                }); //end deleteNotificacion
+                            } //end onBeforeOpen
+                        }); //end sweetLoading
+                        console.log("sale del load")
+                    } //end if
+                }) //end then
+            console.log("Salio")
+            } //end borrarNotificacion
+        </script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -141,6 +191,7 @@
             })
         }
     </script>
+
 </body>
 
 </html>

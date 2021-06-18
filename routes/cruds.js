@@ -474,16 +474,35 @@ module.exports = {
         res.redirect('/asadas');
     },
 
-
     deleteAsada: (req, res) => {
-        if (req.session.value == 1) {
-
-            var borrados = req.query.borrados;
-            if (!(borrados === undefined)) {
-                borrados.forEach(function (element) {
-                    db.query("delete from ASADA where id='" + element + "' ;");
-                });
-            }
+        console.log("ENTRA");
+        if (req.session.value != 1) {
+            res.status(402).send("Not authorized");
+        }
+        else{
+            db.beginTransaction(function(error){
+                if(error){
+                    db.rollback();
+                    console.log("ERROR: "+error);
+                    res.send({"error:":true});
+                }
+                else{
+                    var deleteAsada = "delete from ASADA where ID=?" ;
+                    console.log(req.body.idAsada);
+                    db.query(deleteAsada,req.body.idAsada,function(err,rows,fields){
+                        if(err){
+                            db.rollback();
+                            console.log("error"+err);
+                            res.send({"error":true});
+                        }//end if
+                        else{
+                            db.commit();
+                            res.send({"error":false});
+                            console.log("SUCCESS!");
+                        }//end else
+                    });
+                }
+            })
         }
     },
 
@@ -900,6 +919,7 @@ module.exports = {
     {
         var updateSolicitudAsada = "update SOLICITUDASADA set pendiente = ? where id = ?;";
         var updateSolicitudAsadaValues = [req.body.respuesta, req.body.idSolicitud];
+		console.log(req.body.distrito);
         db.query("START TRANSACTION;", function(error, row, field)
         {
             db.query(updateSolicitudAsada, updateSolicitudAsadaValues, function(err, rows, fields)
@@ -918,7 +938,7 @@ module.exports = {
                 {
                     var insertarAsada = "insert into ASADA (nombre, distrito_id, latitud, longitud) values (?, ?, ?, ?);"
                     var insertarAsadaValues = [req.body.nombre, req.body.distrito, req.body.latitud, req.body.longitud];
-
+					console.log(req.body.nombre, req.body.distrito, req.body.latitud, req.body.longitud)
                     var insertarAsadaInfo = "insert into ASADAINFO (asada_id, ubicacion, telefono, poblacion, url, cantAbonados, celular) values ((SELECT ID FROM ASADA WHERE DISTRITO_ID = " + req.body.distrito + " ORDER BY 1 DESC LIMIT 1 ), ?, ?, ?, ?, ?, ?);"
                     var insertarAsadaInfoValues = [req.body.ubicacion, req.body.telefono, req.body.poblacion, req.body.url, req.body.cantAbonados, req.body.celular];
 
@@ -1213,6 +1233,44 @@ module.exports = {
             }) //end beginTransaction
         } //end else
     }, //end deleteNotificacion
+
+    deleteUser: (req, res) =>
+    {
+        if(req.session.value != 1)
+        {
+            res.status(402).send("Not authorized");
+        } //end if
+        else
+        {
+            db.beginTransaction(function(error)
+            {
+                if(error)
+                {
+                    db.rollback();
+                    console.log('ERROR.\n' + error);
+                    res.send({"error": true});
+                } //end if
+                else
+                {
+                    var deleteUser = "delete from USUARIO where ID = ?";
+                    db.query(deleteUser, req.body.idUsuario, function(err, rows, fields)
+                    {
+                        if(err)
+                        {
+                            db.rollback();
+                            console.log('deleteUser. Error while performing deleteUser.\n' + err);
+                            res.send({"error": true});
+                        } //end if
+                        else
+                        {
+                            db.commit();
+                            res.send({"error": false});
+                        } //end else
+                    }); //end deleteUser
+                } //end else
+            }) //end beginTransaction
+        } //end else
+    }, //end deleteUser
 
     getAyudaRiesgo : (req, res)=>{
         //if(req.session.value != 1)

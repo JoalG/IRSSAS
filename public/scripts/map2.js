@@ -69,10 +69,10 @@ var styleFunction2 = function(feature) {
         else
           return new ol.style.Style({
                     fill: new ol.style.Fill({
-                          color: colores[jsonsites2.valores[index]]
+                          color: colores[jsonsites.valores[index]]
                     }),
                     stroke: new ol.style.Stroke({
-                          color: colores[jsonsites2.valores[index]]
+                          color: colores[jsonsites.valores[index]]
 
                     })
                 });

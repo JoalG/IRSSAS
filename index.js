@@ -25,27 +25,21 @@ global.transporter = transporter;
 
 
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 80
 
 //llamar funciones de controller.js
 
-const {getCrudComponente, saveComponente, getCrudSubcomponente, saveSubComponente, getCrudIndicador, getIndicador, deleteIndicador, updateIndicador, newIndicador, createIndicador, getCrudAsadasR,getCrudAsadasU, getPresentAsada, saveAsada, newAsada, createAsada, deleteAsada, crudFormularios, sendForm, getCrudUsuario, saveUsuario, getUsuariosAsadas,setUsuariosAsada, guardarFormulario, cargarFormulario, getContacto, updateEstado, changePassword,forgetPassword, getListaAsociaciones, nuevaAsociacion, nuevaAsociacionGuardar, editarAsociacion, editarAsociacionGuardar, eliminarAsociacion, sendSolicitudRegistroAsada, aceptarRechazarSolicitudRegistroAsada, getAyudaPregunta, deleteNotificacion, getAyudaRiesgo, getInformeUsuarioGeneral} = require('./routes/cruds');
+const {deleteUser, getCrudComponente, saveComponente, getCrudSubcomponente, saveSubComponente, getCrudIndicador, getIndicador, deleteIndicador, updateIndicador, newIndicador, createIndicador, getCrudAsadasR,getCrudAsadasU, getPresentAsada, saveAsada, newAsada, createAsada, deleteAsada, crudFormularios, sendForm, getCrudUsuario, saveUsuario, getUsuariosAsadas,setUsuariosAsada, guardarFormulario, cargarFormulario, getContacto, updateEstado, changePassword,forgetPassword, getListaAsociaciones, nuevaAsociacion, nuevaAsociacionGuardar, editarAsociacion, editarAsociacionGuardar, eliminarAsociacion, sendSolicitudRegistroAsada, aceptarRechazarSolicitudRegistroAsada, getAyudaPregunta, deleteNotificacion, getAyudaRiesgo, getInformeUsuarioGeneral} = require('./routes/cruds');
 const {getAsadaDefault, getHomePage, login, getMain, getVisor, getComponente, logout, getSites, grafico, getRiesgo, getAsada, getInfoGeneral, generarInforme, histFormulario, getAnno, getRespuestas, comparaMapas, statsComponentes,statsSubcomponentes, getCantones, getDistritos, getEstadisticas, getMapa, getManualData, getManualUsuario, getManualDataDescargar, getRutas, getRutasData, solicitudRegistroAsada, validarUsuario, getVerSolicitudRegistroAsada,getEstadisticasGenerales,generarInformeMejora, getInformeMejora, sendCorreosNotificacionesAdmin, getInfoAsada, getAllSubcomponentes, getStatsSubcomponentesAsada, loginPage, cambiarPage, recuperacionPage} = require('./routes/controller');
 
 
 //conexion de BD
 const db = mysql.createConnection ({
-    host     : process.env.DB_URL,
-    user     : process.env.DB_USER,
-    password : process.env.DB_PASS,
-    database : process.env.DB_NAME,
-    port : process.env.DB_PORT,
-    ssl: {
-        ca: process.env.SERVER_CA_PEM
-        ,
-        key: process.env.CLIENT_KEY_PEM, 
-        cert: process.env.CLIENT_CERT_PEM
-    }
+    host     : 'localhost',
+    user     : 'root',
+    password : 'password',
+    database : 'asadas',
+    port : '3306',
 });
 
 db.connect((err) => {
@@ -53,7 +47,7 @@ db.connect((err) => {
         throw err;
     }
     console.log('Connected to database');
-    db.query("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';")
+    db.query("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';")
 });
 global.db = db;
 
@@ -106,7 +100,7 @@ app.post('/createindicador', createIndicador);
 app.get('/usuario', getCrudUsuario);
 app.get('/newasada',newAsada);
 app.post('/createasada',createAsada);
-app.get('/deleteasada', deleteAsada);
+app.post('/deleteasada', deleteAsada);
 app.get('/grafico', grafico);
 app.get('/getRiesgo', getRiesgo);
 app.get('/getAsada', getAsada);
@@ -166,6 +160,7 @@ app.get("/login", loginPage)
 app.get("/cambiar", cambiarPage)
 app.get("/recuperar", recuperacionPage)
 
+app.post("/deleteUser",deleteUser)
 // llamada al puerto 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);

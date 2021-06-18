@@ -81,7 +81,7 @@
                                         </select>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <button class="btn btn-icon" onclick="deleteUser(this, <%=user.ID%>);">
+                                        <button class="btn btn-icon" onclick="borrarUsuario(this, <%=user.ID%>);">
                                             <i class="fas fa-trash text-danger"></i>
                                         </button>
                                     </td>
@@ -126,6 +126,56 @@
 
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script type="text/javascript">
+            function borrarUsuario(element,idUsuario)
+            {
+                console.log("Usuario borrar: ",idUsuario);
+                Swal.fire(
+                {
+                    title: 'Borrar Usuario',
+                    text: '¿Desea borrar este Usuario?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1D2D51',
+                    cancelButtonColor: '#e13c26',
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: 'No'
+                }) //end sweetConfirmation
+                .then((result) =>
+                {
+                    if (result.value)
+                    {
+                        console.log("empieza el load")
+                        Swal.fire(
+                        {
+                            title: "Cargando...",
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            onBeforeOpen: ()=>
+                            {
+                                Swal.showLoading();
+                                $.post("/deleteUser", {"idUsuario": idUsuario}, function(data)
+                                {
+                                    Swal.fire(
+                                    {
+                                        title: data.error ? 'Error' : 'Éxito',
+                                        icon: data.error ? 'error' : 'success',
+                                        text: data.error ? 'Ocurrió un error al borrar la usuario' : 'El usuario se borró con éxito',
+                                        confirmButtonColor: '#1D2D51'
+                                    }) //end sweetResult
+                                    .then((result) =>
+                                    {
+                                        element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
+                                    })
+                                }); //end 
+                            } //end onBeforeOpen
+                        }); //end sweetLoading
+                        console.log("sale del load")
+                    } //end if
+                }) //end then
+            console.log("Salio")
+            } //end 
+        </script>
     <script src="scripts/crud.js"></script>
 </body>
 
