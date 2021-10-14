@@ -3,13 +3,13 @@ const fs = require('fs');
 module.exports = {
 
 
-		getAsadaDefault: (req, res)=>{
-			if(req.session.value == 1 && req.session.usuario.Tipo=="2"){
-				res.redirect(`/asadas/${req.session.usuario.Asada_ID}`);
-			}else{
-				res.redirect("/");
-			}
-		},
+    getAsadaDefault: (req, res)=>{
+        if(req.session.value == 1 && req.session.usuario.Tipo=="2"){
+            res.redirect(`/asadas/${req.session.usuario.Asada_ID}`);
+        }else{
+            res.redirect("/");
+        }
+    },
 		
     //Función de inicio, carga el mapa
     getHomePage: (req, res) => {
@@ -85,7 +85,6 @@ module.exports = {
 		else
 			res.redirect('/');
     },
-    
     
     //Redirecciona a la página de informe de mejora dependiendo de si es admin o super usuario
     generarInformeMejora: (req, res) => {
@@ -878,6 +877,20 @@ module.exports = {
     {
         res.render("pages/Cambiar.ejs")
     },
+    getGirsData: (req, res) => 
+    {
+        instanceFirebase().then(function(snapshot) {
+            const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            var dataFilter = list.filter( function(element){
+                if (element["canton"]!=null && req.params.canton !=null){
+                    return element["canton"].toUpperCase() === req.params.canton.toUpperCase();
+                }
+            });
+            return res.send(dataFilter);
+        }, function(reason) {
+            return res.send(reason);
+        });        
+    },
 
     recuperacionPage: (req, res)=>
     {
@@ -956,4 +969,35 @@ function getTipoRiesgo(valor)
     {
       return 0
     }
+}
+
+async function instanceFirebase(){
+
+    const firebase = require("firebase");
+
+    const firebaseConfig = {
+        useEmulators: true,
+        apiKey: "AIzaSyBQyeNRiFuRAW16iTQeb5sc3e8qOE8AAZw",
+        authDomain: "girs-b96e1.firebaseapp.com",
+        projectId: "girs-b96e1",
+        storageBucket: "girs-b96e1.appspot.com",
+        messagingSenderId: "1062568919724",
+        appId: "1:1062568919724:web:4edd7ed671b1cd6c5ad509",
+        measurementId: "G-K09DXTF0FZ",
+    };
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }else {
+        firebase.app(); // if already initialized, use that one
+    }
+    const db = firebase.firestore();
+    const Collec = db.collection("girsData");
+    return Collec.get()
+        .then(function (data) {
+            return data;
+        })
+        .catch(function (ex) {
+            return ex;
+        }
+    );
 }
