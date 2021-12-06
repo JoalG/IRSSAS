@@ -136,10 +136,12 @@
                 <%if(usuario.Tipo == 1){%>
                     +"?asada=" + $("#asada")[0].value
                 <%}%>
+                
             }
         </script>
         <script src="/scripts/script.js"></script>
         <script src="scripts/getProvCantDist.js"></script>
+        <script src="scripts/getGIRSDATA.js"></script>
         <%if(usuario.Tipo == 2){%>
             <script type="text/javascript">
                 getAnnos($("#asada")[0])

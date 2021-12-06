@@ -121,7 +121,7 @@
         </script>
         <script type="text/javascript">
             var ayudasPreguntas = {};
-            function mostrarAyudaPregunta(idPregunta)
+            async function mostrarAyudaPregunta(idPregunta)
             {
                 if(ayudasPreguntas[idPregunta] != undefined)
                 {
@@ -129,7 +129,7 @@
                     {
                         title: '',
                         icon: 'info',
-                        html: `<p id="text-ayuda">${ayudasPreguntas[idPregunta].ayuda}<br>${ayudasPreguntas[idPregunta].url == "" ? "" : `<a class="ayuda-link" href="${ayudasPreguntas[idPregunta].url}" target="_blank">Click para más información</a>`}</p>`,
+                        html: `<p id="text-ayuda">${await getAyudaPreguntas(ayudasPreguntas, idPregunta)}<br>${ayudasPreguntas[idPregunta].url == "" ? "" : `<a class="ayuda-link" href="${ayudasPreguntas[idPregunta].url}" target="_blank">Click para más información</a>`}</p>`,
                         confirmButtonColor: '#1D2D51'
                     }); //end sweetAyuda
                 } //end if
@@ -160,6 +160,7 @@
         </script>
         <script src="/scripts/crud.js"></script>
         <script src="/scripts/script.js"></script>
+        <script src="/scripts/getGIRSDATA.js"></script>
         <script type="text/javascript">
             <%if(usuario.Tipo == 1){%>
                 $("#asada")[0].value = (new URL(document.URL)).searchParams.get("asada")

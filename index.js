@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 80
 //llamar funciones de controller.js
 
 const {deleteUser, getCrudComponente, saveComponente, getCrudSubcomponente, saveSubComponente, getCrudIndicador, getIndicador, deleteIndicador, updateIndicador, newIndicador, createIndicador, getCrudAsadasR,getCrudAsadasU, getPresentAsada, saveAsada, newAsada, createAsada, deleteAsada, crudFormularios, sendForm, getCrudUsuario, saveUsuario, getUsuariosAsadas,setUsuariosAsada, guardarFormulario, cargarFormulario, getContacto, updateEstado, changePassword,forgetPassword, getListaAsociaciones, nuevaAsociacion, nuevaAsociacionGuardar, editarAsociacion, editarAsociacionGuardar, eliminarAsociacion, sendSolicitudRegistroAsada, aceptarRechazarSolicitudRegistroAsada, getAyudaPregunta, deleteNotificacion, getAyudaRiesgo, getInformeUsuarioGeneral} = require('./routes/cruds');
-const {getAsadaDefault, getHomePage, login, getMain, getVisor, getComponente, logout, getSites, grafico, getRiesgo, getAsada, getInfoGeneral, generarInforme, histFormulario, getAnno, getRespuestas, comparaMapas, statsComponentes,statsSubcomponentes, getCantones, getDistritos, getEstadisticas, getMapa, getManualData, getManualUsuario, getManualDataDescargar, getRutas, getRutasData, solicitudRegistroAsada, validarUsuario, getVerSolicitudRegistroAsada,getEstadisticasGenerales,generarInformeMejora, getInformeMejora, sendCorreosNotificacionesAdmin, getInfoAsada, getAllSubcomponentes, getStatsSubcomponentesAsada, loginPage, cambiarPage, recuperacionPage} = require('./routes/controller');
+const {getAsadaDefault, getHomePage, login, getMain, getVisor, getComponente, logout, getSites, grafico, getRiesgo, getAsada, getInfoGeneral, generarInforme, histFormulario, getAnno, getRespuestas, comparaMapas, statsComponentes,statsSubcomponentes, getCantones, getDistritos, getEstadisticas, getMapa, getManualData, getManualUsuario, getManualDataDescargar, getRutas, getRutasData, solicitudRegistroAsada, validarUsuario, getVerSolicitudRegistroAsada,getEstadisticasGenerales,generarInformeMejora, getInformeMejora, sendCorreosNotificacionesAdmin, getInfoAsada, getAllSubcomponentes, getStatsSubcomponentesAsada, loginPage, cambiarPage, recuperacionPage, getGirsData} = require('./routes/controller');
 
 
 //conexion de BD
@@ -159,6 +159,8 @@ app.get('/getStatsSubcomponentes/:idAsada', getStatsSubcomponentesAsada)
 app.get("/login", loginPage)
 app.get("/cambiar", cambiarPage)
 app.get("/recuperar", recuperacionPage)
+
+app.get("/getGIRSData/:canton", getGirsData)
 
 app.post("/deleteUser",deleteUser)
 // llamada al puerto 
